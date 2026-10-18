@@ -1,6 +1,6 @@
 # For AI agents setting this up on someone's TV
 
-Goal: give the user's Android TV the androidtv-makeover home screen, screensaver and debloat, safely and reversibly.
+Goal: give the user's Android TV the androidtv-clean home screen, screensaver and debloat, safely and reversibly.
 
 ## Rules
 

@@ -1,6 +1,6 @@
-# androidtv-makeover
+# androidtv-clean
 
-Give your Android TV an Apple TV makeover. You get a clean home screen with no ads and no rows, a photo screensaver, a remote page for your phone, and a debloat list that switches off ads and tracking.
+A clean, ad-free Android TV that feels like Apple TV. You get a clean home screen with no ads and no rows, a photo screensaver, a remote page for your phone, and a debloat list that switches off ads and tracking.
 
 It all runs over ADB from your computer. No root, and every change can be undone.
 

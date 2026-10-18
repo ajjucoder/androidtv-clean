@@ -1,0 +1,7 @@
+# Private to each TV: settings dumps, screenshots, the signing key, local app lists
+backup/
+before.png
+background.txt
+launcher/debug.keystore
+launcher/build/
+.DS_Store

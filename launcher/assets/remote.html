@@ -1,0 +1,200 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, user-scalable=no">
+<meta name="theme-color" content="#000000">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black">
+<title>TV Remote</title>
+<style>
+  @font-face { font-family: Geist; font-weight: 500; src: url(/medium.ttf); }
+  @font-face { font-family: Geist; font-weight: 600; src: url(/semibold.ttf); }
+  :root {
+    --ease-out: cubic-bezier(0.23, 1, 0.32, 1);
+    --surface: #161618;
+    --hairline: rgba(255, 255, 255, 0.08);
+    --grey: rgba(255, 255, 255, 0.55);
+  }
+  * { box-sizing: border-box; margin: 0; -webkit-tap-highlight-color: transparent; }
+  html, body { background: #000; color: #fff; }
+  body {
+    font: 500 16px/1.3 Geist, -apple-system, system-ui, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    padding: max(20px, env(safe-area-inset-top)) 20px max(28px, env(safe-area-inset-bottom));
+    max-width: 440px; margin: 0 auto;
+    user-select: none; -webkit-user-select: none;
+  }
+  button {
+    font: inherit; color: inherit; border: 0; background: none; cursor: pointer;
+    transition: transform 160ms var(--ease-out), background-color 150ms ease, color 150ms ease;
+    touch-action: manipulation;
+  }
+  button:active { transform: scale(0.96); }
+
+  header { display: flex; align-items: center; justify-content: space-between; height: 44px; }
+  h1 { font-weight: 600; font-size: 22px; letter-spacing: -0.02em; }
+  .sub { color: var(--grey); font-size: 14px; margin-top: 2px; }
+  .round {
+    width: 44px; height: 44px; border-radius: 50%;
+    background: var(--surface); box-shadow: inset 0 0 0 1px var(--hairline);
+    display: grid; place-items: center;
+  }
+  svg.icon { width: 20px; height: 20px; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+
+  .dial { position: relative; width: 248px; height: 248px; margin: 36px auto 0; }
+  .dial svg { width: 100%; height: 100%; }
+  .dial circle { fill: none; stroke-width: 10; stroke-linecap: round; }
+  .track { stroke: var(--surface); }
+  .level { stroke: #fff; transition: stroke-dasharray 200ms var(--ease-out), stroke 150ms ease; }
+  .muted .level { stroke: rgba(255, 255, 255, 0.25); }
+  .readout { position: absolute; inset: 0; display: grid; place-content: center; text-align: center; }
+  .num { font-weight: 600; font-size: 72px; letter-spacing: -0.05em; font-variant-numeric: tabular-nums; line-height: 1; transition: color 150ms ease; }
+  .muted .num { color: rgba(255, 255, 255, 0.3); }
+  .label { color: var(--grey); font-size: 14px; margin-top: 8px; }
+
+  .controls { display: flex; align-items: center; justify-content: center; gap: 20px; margin-top: 8px; }
+  .step {
+    width: 76px; height: 76px; border-radius: 50%;
+    background: var(--surface); box-shadow: inset 0 0 0 1px var(--hairline);
+    display: grid; place-items: center;
+  }
+  .step svg.icon { width: 26px; height: 26px; }
+  .mute {
+    height: 48px; padding: 0 20px 0 16px; border-radius: 24px;
+    background: var(--surface); box-shadow: inset 0 0 0 1px var(--hairline);
+    display: flex; align-items: center; gap: 8px; font-size: 15px;
+  }
+  .mute.on { background: #fff; color: #000; box-shadow: none; }
+
+  h2 { font-weight: 500; font-size: 15px; color: var(--grey); margin: 40px 0 12px; }
+  .apps { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  .app {
+    height: 60px; padding: 0 16px; border-radius: 16px; text-align: left;
+    background: var(--surface); box-shadow: inset 0 0 0 1px var(--hairline);
+    display: flex; align-items: center; justify-content: space-between; font-size: 16px;
+  }
+  .app span { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .app svg.icon { width: 16px; height: 16px; color: var(--grey); flex: none; }
+
+  .status { text-align: center; color: var(--grey); font-size: 13px; margin-top: 28px; min-height: 18px; transition: color 150ms ease; }
+  .status.err { color: #ff6961; }
+</style>
+</head>
+<body>
+  <header>
+    <div>
+      <h1>Living room</h1>
+      <div class="sub">JBL Bar 9.1 via TV</div>
+    </div>
+    <button class="round" id="home" aria-label="TV home screen">
+      <svg class="icon" viewBox="0 0 24 24"><path d="M4 10.5 12 4l8 6.5V19a1.5 1.5 0 0 1-1.5 1.5h-3.5v-6h-6v6H5.5A1.5 1.5 0 0 1 4 19z"/></svg>
+    </button>
+  </header>
+
+  <div class="dial" id="dial">
+    <svg viewBox="0 0 240 240" aria-hidden="true">
+      <circle class="track" cx="120" cy="120" r="104" transform="rotate(135 120 120)"/>
+      <circle class="level" id="level" cx="120" cy="120" r="104" transform="rotate(135 120 120)"/>
+    </svg>
+    <div class="readout">
+      <div class="num" id="num">–</div>
+      <div class="label" id="label">Volume</div>
+    </div>
+  </div>
+
+  <div class="controls">
+    <button class="step" id="down" aria-label="Volume down">
+      <svg class="icon" viewBox="0 0 24 24"><path d="M5 12h14"/></svg>
+    </button>
+    <button class="mute" id="mute">
+      <svg class="icon" viewBox="0 0 24 24" id="muteIcon"><path d="M11 5 6 9H3v6h3l5 4z"/><path d="M15.5 8.5a5 5 0 0 1 0 7"/></svg>
+      <span id="muteText">Mute</span>
+    </button>
+    <button class="step" id="up" aria-label="Volume up">
+      <svg class="icon" viewBox="0 0 24 24"><path d="M5 12h14M12 5v14"/></svg>
+    </button>
+  </div>
+
+  <h2>Open on TV</h2>
+  <div class="apps" id="apps"></div>
+
+  <div class="status" id="status"></div>
+
+<script>
+  const C = 2 * Math.PI * 104, ARC = C * 0.75;
+  const $ = id => document.getElementById(id);
+  $('dial').querySelector('.track').setAttribute('stroke-dasharray', ARC + ' ' + C);
+  let appsKey = '';
+
+  function render(s) {
+    const muted = s.muted;
+    $('dial').classList.toggle('muted', muted);
+    $('num').textContent = s.vol;
+    $('label').textContent = muted ? 'Muted' : 'Volume';
+    $('level').setAttribute('stroke-dasharray', (ARC * s.vol / s.max) + ' ' + C);
+    $('mute').classList.toggle('on', muted);
+    $('muteText').textContent = muted ? 'Unmute' : 'Mute';
+    const key = JSON.stringify(s.apps);
+    if (key !== appsKey) {
+      appsKey = key;
+      $('apps').innerHTML = '';
+      for (const a of s.apps) {
+        const b = document.createElement('button');
+        b.className = 'app';
+        b.innerHTML = '<span></span><svg class="icon" viewBox="0 0 24 24"><path d="m9 6 6 6-6 6"/></svg>';
+        b.firstChild.textContent = a.l;
+        b.onclick = () => send('open/' + a.k, a.l);
+        $('apps').appendChild(b);
+      }
+    }
+    status('');
+  }
+
+  function status(t, err) {
+    $('status').textContent = t;
+    $('status').classList.toggle('err', !!err);
+  }
+
+  async function call(method, path) {
+    const r = await fetch(path, { method, cache: 'no-store' });
+    if (!r.ok) throw new Error(r.status);
+    return r.json();
+  }
+
+  async function send(what, name) {
+    if (navigator.vibrate) navigator.vibrate(8);
+    try {
+      render(await call('POST', '/' + what));
+      if (name) status('Opening ' + name + '…');
+    } catch (e) { status("Can't reach the TV", true); }
+  }
+
+  async function poll() {
+    try { render(await call('GET', '/state')); }
+    catch (e) { status("Can't reach the TV", true); }
+  }
+
+  // Hold − or + to keep stepping.
+  function holdable(id, what) {
+    const el = $(id);
+    let delay, repeat;
+    const stop = () => { clearTimeout(delay); clearInterval(repeat); };
+    el.addEventListener('pointerdown', e => {
+      e.preventDefault();
+      send(what);
+      delay = setTimeout(() => { repeat = setInterval(() => send(what), 220); }, 420);
+    });
+    ['pointerup', 'pointerleave', 'pointercancel'].forEach(t => el.addEventListener(t, stop));
+  }
+  holdable('down', 'down');
+  holdable('up', 'up');
+  $('mute').onclick = () => send('mute');
+  $('home').onclick = () => send('open/home', 'home screen');
+
+  poll();
+  setInterval(() => { if (!document.hidden) poll(); }, 2000);
+  document.addEventListener('visibilitychange', () => { if (!document.hidden) poll(); });
+</script>
+</body>
+</html>

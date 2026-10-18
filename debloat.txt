@@ -1,0 +1,55 @@
+# Sony KD-65X8000G (BRAVIA 4K GB ATV3, Android TV 9) debloat list.
+# Disabled with `pm disable-user --user 0`, never uninstalled. Undo with ./restore.sh
+
+# Ads, sponsored rows, Sony content
+com.google.android.tvrecommendations     # sponsored / recommendation rows
+com.sony.dtv.sonyselect                  # Sony Select app promo
+com.sony.dtv.discovery                   # Sony "Discover" content bar
+com.sony.dtv.tvlaunchercustomizer        # stock launcher ad/app-order customizer
+com.sony.dtv.demomode                    # store demo
+com.sony.dtv.demosupport
+com.sony.dtv.multiscreendemo
+
+# Hotel / business (B2B) mode, not used at home
+com.sony.dtv.b2b.hotelmode
+com.sony.dtv.b2b.prosettings
+com.sony.dtv.b2b.rs232csupport
+com.sony.dtv.b2b.vendorprotocol
+com.sony.dtv.b2b.importexport
+com.sony.dtv.b2b.noderuntime.normal
+com.sony.dtv.b2b.noderuntime.privilege
+
+# Telemetry, logging, bug reports
+com.sony.dtv.da.service
+com.qterics.da.product
+com.sony.dtv.sonybugreportsys
+com.sony.dtv.sonyloglevelsettingsys
+com.sony.dtv.sonyloglevelsettingvnd
+com.google.android.tv.bugreportsender
+com.google.android.feedback
+
+# Preloaded apps nobody uses
+com.sony.dtv.imanual                     # help manual
+com.sony.dtv.smarthelp
+com.sony.dtv.osat.music                  # Sony Music player
+com.sony.dtv.rcplayer                    # remote play
+com.sony.dtv.rcplayer.service
+com.vewd.core.integration.dia            # Vewd internet browser
+com.google.android.play.games
+com.google.android.videos                # Play Movies & TV
+com.google.android.youtube.tvmusic
+com.google.android.backdrop              # ambient photo screensaver (basic screensaver stays)
+com.google.android.marvin.talkback
+
+# Leftovers in All Apps, and tracking
+com.sony.dtv.smartmediaapp               # Media Player (USB files)
+com.sony.dtv.timers                      # Timers
+screnmirroring.com                       # Screen mirroring (Chromecast built-in still works)
+com.sony.dtv.tvxlauncher.programguide    # TV guide app (only needed for built-in tuner recordings)
+com.sony.dtv.tvxlauncher.titlelist       # Recordings list
+tv.samba.ssm                             # Samba TV: watches what is on screen for ad tracking
+com.sony.dtv.hbbtvlauncher               # HbbTV broadcaster pop-ups and tracking
+com.sony.dtv.customersupport             # Sony help app
+com.sony.dtv.remoteaccess                # Sony remote support access
+com.android.printspooler                 # printing
+com.google.android.syncadapters.calendar # calendar sync, unused on a TV
